@@ -12,11 +12,11 @@ library(r2d3)
 library(shiny)
 library(shinythemes)
 library(shinyjs)
-#source("utils.R")
+source("read_data.R")
 # source("stats.R")
 # source("networks.R")
 
-tmp <- setup_workspace(rer = F)
+tmp <- setup_workspace(reread = F)
 papers <- tmp$paper
 paper_list <- unique(papers$sheet) %>% sort()
 
