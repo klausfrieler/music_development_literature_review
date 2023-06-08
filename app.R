@@ -17,8 +17,9 @@ source("read_data.R")
 # source("networks.R")
 
 tmp <- setup_workspace(reread = F)
+coding_sheet <- tmp[[1]][[1]]
 papers <- tmp$paper
-paper_list <- unique(papers$sheet) %>% sort()
+paper_list <- c("Coding Sheet", unique(papers$sheet) %>% sort())
 
 impressum <- function(){
     p(
@@ -201,7 +202,12 @@ server <- function(input, output, session) {
         #         arrange(desc(n_comm)) %>% 
         #         set_names("Name", "Community ID", "Community Size", "Core")
         # }
-        papers %>% filter(sheet == input$paper)
+        if(input$paper == "Coding Sheet"){
+            coding_sheet
+        }
+        else{
+            papers %>% filter(sheet == input$paper)
+        }
     }, options = list(lengthMenu = list(c(25, 50,  -1), c("25", "50",  "All"))))
     # output$collab_network <- renderForceNetwork({
     #     d3n <- get_network(master, 
