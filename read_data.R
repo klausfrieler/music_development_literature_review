@@ -13,7 +13,52 @@ fixed_note_columns <- function(data){
   data
 }
 
-read_data <- function(fname = "data/reviews.xlsx"){
+read_data <- function(version = c("full", "reduced")){
+  version <- match.arg(version)
+  if(version == "full") {
+    read_data_full()
+  }
+  else{
+    read_data_reduced()
+  }
+}
+
+normalize_authors <- function(author, year, paper_no){
+  tmp <- str_split_fixed(author, ";", 2)
+  tmp[,2][nzchar(tmp[,2])] <- " et al."
+  sprintf("%s%s (%s) [%s]", tmp[, 1], tmp[,2], year, str_extract(paper_no, "[0-9]+"))  
+}
+
+read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"){
+  #sheets <- readxl::read_excel( fname, sheet = "Main Sheet") %>% arrange(author)
+  sheets <- read_csv2( fname) %>% arrange(author)
+  
+  empty_cols <- sapply(sheets, function(x) mean(is.na(x)))
+  empty_cols <- empty_cols[empty_cols == 1]
+  sheets <- sheets %>% select(!names(empty_cols)) %>% janitor::clean_names()
+  
+  nm <- names(sheets) 
+  
+  logicals <- setdiff(nm[str_detect(nm, "_y_n")], "all_necessary_items_and_instructions_for_testing_available_in_paper_or_online_y_n")
+  for(lg in logicals){
+    sheets[[lg]] <- c("y" = 1, "n" = 0, "unclear" = -1)[sheets[[lg]]]
+  }
+  
+  nm <- nm %>% 
+    str_remove_all("[0-9]+")%>% 
+    str_remove_all("_y_n")%>% 
+    str_remove_all("__y__n")%>% 
+    str_remove_all("_$") 
+  
+  sheets <- sheets %>% 
+    set_names(nm) %>%
+    mutate(paper_id = normalize_authors(author, year, paper_no))
+  
+  saveRDS(sheets, "data/all_papers_reduced.rds")
+  sheets
+}
+
+read_data_full <- function(fname = "data/reviews.xlsx"){
   sheets <- readxl::excel_sheets( fname) 
   num_sheets <- length(sheets)
   master <- 
@@ -70,11 +115,19 @@ read_data <- function(fname = "data/reviews.xlsx"){
   browser()
   invisible(list(coding_sheet = master[1], papers = bind_rows(master[3:63])))  
 }
-setup_workspace <- function(reread = F){
+
+setup_workspace <- function(version = c("full", "reduced"), reread = F){
+  version <- match.arg(version)
   if(reread){
-    read_data()
+    read_data(version)
   }
   else{
-    readRDS("data/all_papers.rds")
+    if(version == "full"){
+      fname <- "data/all_papers.rds"
+    }
+    else{
+      fname <- "data/all_papers_reduced.rds"
+    }
+    readRDS(fname)
   }
 }

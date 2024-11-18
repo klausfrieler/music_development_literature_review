@@ -15,11 +15,17 @@ library(shinyjs)
 source("read_data.R")
 # source("stats.R")
 # source("networks.R")
-
-tmp <- setup_workspace(reread = F)
-coding_sheet <- tmp[[1]][[1]]
-papers <- tmp$paper
-paper_list <- c("Coding Sheet", unique(papers$sheet) %>% sort())
+type <- "reduced"
+if(type == "full"){
+    tmp <- setup_workspace(reread = F)
+    coding_sheet <- tmp[[1]][[1]]
+    papers <- tmp$paper
+    paper_list <- c("Coding Sheet", unique(papers$sheet) %>% sort())
+} else{
+    papers <- setup_workspace(reread = F, version = "reduced")
+    paper_list <- c("--", unique(papers$paper_id))
+    
+}
 
 impressum <- function(){
     p(
@@ -33,20 +39,10 @@ impressum <- function(){
                  target = "_blank"),
         shiny::tags$br(),
         shiny::tags$br(), 
-        "Data provided by", 
-        shiny::a(href = "https://m-w-w.github.io/", "Michael Weiss", target = "_blank"), 
-        shiny::tags$br(),
-        shiny::tags$br(), 
         "Powered by",
         shiny::tags$br(),
         shiny::a(href = "http://www.music-psychology.de/",
                  "Deutsche Gesellschaft für Musikspsychologie", target = "_blank"),
-        shiny::tags$br(), 
-        shiny::tags$br(),
-        shiny::a(href = "https://github.com/klausfrieler/icmpc16_escom11_shiny_programme", "On Github", target = "_blank"), 
-        shiny::tags$br(), 
-        shiny::tags$br(),
-        shiny::a(href = "http://testing.musikpsychologie.de/icmpc16_escom11_shiny_programme/", "ICMPC16/ESCOM11 Progamme App", target = "_blank"), 
         style = "font-size: 10pt; display: block"
     )
     
@@ -67,7 +63,8 @@ ui <-
                     # Input: Select information ----
                     selectInput(inputId = "paper", 
                                 label = "Paper",
-                                choices = paper_list, selected = paper_list[1],
+                                choices = paper_list, 
+                                selected = paper_list[1],
                                 multiple = F, selectize = F),
                     # selectInput(inputId = "comnunity_id", 
                     #             label = "Community ID",
@@ -206,9 +203,18 @@ server <- function(input, output, session) {
             coding_sheet
         }
         else{
-            papers %>% filter(sheet == input$paper)
+            if(type == "reduced"){
+                if(input$paper == "--"){
+                    papers %>% select(!matches("note")) %>% select(-paper_id)
+                } else{
+                    papers %>% filter(paper_id == input$paper) %>% select(!matches("note")) %>% select(-paper_id)
+                }
+            } else{
+                papers %>% filter(sheet == input$paper) %>% select(-paper_id)
+                
+            }
         }
-    }, options = list(lengthMenu = list(c(25, 50,  -1), c("25", "50",  "All"))))
+    }, filter = "top", options = list(lengthMenu = list(c(25, 50,  -1), c("25", "50",  "All"))))
     # output$collab_network <- renderForceNetwork({
     #     d3n <- get_network(master, 
     #                        author  = input$highlight_author, 
