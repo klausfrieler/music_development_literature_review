@@ -24,7 +24,7 @@ if(type == "full"){
 } else{
     papers <- setup_workspace(reread = F, version = "reduced")
     paper_list <- c("--", unique(papers$paper_id))
-    
+    var_list <- names(papers)
 }
 
 impressum <- function(){
@@ -61,6 +61,11 @@ ui <-
                 sidebarPanel(
                     shinyjs::useShinyjs(),
                     # Input: Select information ----
+                    selectInput(inputId = "variables", 
+                                label = "Variables",
+                                choices = var_list, 
+                                selected = var_list[1:5],
+                                multiple = T, selectize = T),
                     selectInput(inputId = "paper", 
                                 label = "Paper",
                                 choices = paper_list, 
@@ -200,19 +205,22 @@ server <- function(input, output, session) {
         #         set_names("Name", "Community ID", "Community Size", "Core")
         # }
         if(input$paper == "Coding Sheet"){
-            coding_sheet
+            return(coding_sheet)
         }
         else{
             if(type == "reduced"){
                 if(input$paper == "--"){
-                    papers %>% select(!matches("note")) %>% select(-paper_id)
+                    ret <- papers %>%  select(-paper_id)
                 } else{
-                    papers %>% filter(paper_id == input$paper) %>% select(!matches("note")) %>% select(-paper_id)
+                    ret <-papers %>% 
+                        filter(paper_id == input$paper) %>%  select(-paper_id)
                 }
             } else{
-                papers %>% filter(sheet == input$paper) %>% select(-paper_id)
+                ret <-papers %>% filter(sheet == input$paper) %>% select(-paper_id)
                 
             }
+            #browser()
+            ret %>% select(all_of(input$variables))
         }
     }, filter = "top", options = list(lengthMenu = list(c(25, 50,  -1), c("25", "50",  "All"))))
     # output$collab_network <- renderForceNetwork({

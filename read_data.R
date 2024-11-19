@@ -36,12 +36,24 @@ read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"
   empty_cols <- sapply(sheets, function(x) mean(is.na(x)))
   empty_cols <- empty_cols[empty_cols == 1]
   sheets <- sheets %>% select(!names(empty_cols)) %>% janitor::clean_names()
+  sheets$year <- as.integer(sheets$year)  
+  sheets$sample_size <- as.integer(sheets$sample_size)  
   
   nm <- names(sheets) 
+  pseudo_log <- sapply(sheets %>% select(where(is.numeric)), function(x) {
+    i <- intersect(unique(x), c(0, 1))
+    length(i) >= 1 & length(i) <= 2
+    })
   
+  browser()  
+  pseudo_log <- names(pseudo_log[pseudo_log])
+  for(lg in pseudo_log){
+    sheets[[lg]] <- c("0" = "no", "1" = "yes", "unclear" = "??")[as.character(sheets[[lg]])] %>% as.character()
+    sheets[[lg]][is.na(sheets[[lg]])] <- "no"
+  }
   logicals <- setdiff(nm[str_detect(nm, "_y_n")], "all_necessary_items_and_instructions_for_testing_available_in_paper_or_online_y_n")
   for(lg in logicals){
-    sheets[[lg]] <- c("y" = 1, "n" = 0, "unclear" = -1)[sheets[[lg]]]
+    sheets[[lg]] <- c("y" = "yes", "n" = "no", "unclear" = "??")[sheets[[lg]]]
   }
   
   nm <- nm %>% 
