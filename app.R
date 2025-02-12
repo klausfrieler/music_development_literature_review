@@ -29,7 +29,7 @@ if(type == "full"){
 
 impressum <- function(){
     p(
-        "Music Development Literature Review v0.1", 
+        "Motivation for Music Measurement", 
         shiny::tags$br(), 
         shiny::tags$br(), 
         "Author: Klaus Frieler", 
