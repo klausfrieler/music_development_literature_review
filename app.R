@@ -17,6 +17,7 @@ source("read_data.R")
 # source("networks.R")
 type <- "reduced"
 if(type == "full"){
+    stop("Not supported in this version")
     tmp <- setup_workspace(reread = F)
     coding_sheet <- tmp[[1]][[1]]
     papers <- tmp$paper
@@ -29,7 +30,7 @@ if(type == "full"){
 
 impressum <- function(){
     p(
-        "Motivation for Music Measurement", 
+        "Measuring Motivation for Music", 
         shiny::tags$br(), 
         shiny::tags$br(), 
         "Author: Klaus Frieler", 
@@ -52,7 +53,7 @@ impressum <- function(){
 ui <-   
     shiny::shinyUI(
     navbarPage(
-        title = "Music Development Literature Review", 
+        title = "Measuring Motivation for Music ", 
         theme = shinytheme("spacelab"),
         id = "tabs",
         tabPanel(

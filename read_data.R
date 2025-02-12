@@ -30,14 +30,14 @@ normalize_authors <- function(author, year, paper_no){
 }
 
 read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"){
-  #sheets <- readxl::read_excel( fname, sheet = "Main Sheet") %>% arrange(author)
-  sheets <- read_csv2( fname) %>% arrange(author)
-  
+  #sheets <- read_csv2( fname) %>% arrange(author)
+  sheets <- read_csv( fname) %>% janitor::clean_names() %>% arrange(author)
+  browser()  
   empty_cols <- sapply(sheets, function(x) mean(is.na(x)))
   empty_cols <- empty_cols[empty_cols == 1]
   sheets <- sheets %>% select(!names(empty_cols)) %>% janitor::clean_names()
   sheets$year <- as.integer(sheets$year)  
-  sheets$sample_size <- as.integer(sheets$sample_size)  
+  sheets$sample_size_n <- as.integer(sheets$sample_size_n)  
   
   nm <- names(sheets) 
   pseudo_log <- sapply(sheets %>% select(where(is.numeric)), function(x) {
@@ -64,7 +64,7 @@ read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"
   
   sheets <- sheets %>% 
     set_names(nm) %>%
-    mutate(paper_id = normalize_authors(author, year, paper_no))
+    mutate(paper_id = normalize_authors(author, year, scale_id))
   
   saveRDS(sheets, "data/all_papers_reduced.rds")
   sheets
