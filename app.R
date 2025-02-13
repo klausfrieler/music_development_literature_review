@@ -24,9 +24,15 @@ if(type == "full"){
     paper_list <- c("Coding Sheet", unique(papers$sheet) %>% sort())
 } else{
     papers <- setup_workspace(reread = F, version = "reduced")
+    papers <- papers %>% rename(sample_size = sample_size_n, 
+                                duration = duration_mostly_estimates,
+                                individual_or_group_testing = individual_or_group_testing_if_child_report_na_if_parent_or_teacher)
     paper_list <- c("--", unique(papers$paper_id))
     var_list <- names(papers)
 }
+keys <- read_keys()
+print(setdiff(names(papers), keys$Column))
+print(setdiff(keys$Column, names(papers)))
 
 impressum <- function(){
     p(
@@ -57,7 +63,7 @@ ui <-
         theme = shinytheme("spacelab"),
         id = "tabs",
         tabPanel(
-            "Stats",
+            "Papers",
             sidebarLayout(
                 sidebarPanel(
                     shinyjs::useShinyjs(),
@@ -86,7 +92,24 @@ ui <-
                     )
                     
                 )
+            ),
+        tabPanel(
+            "Glossary",
+            sidebarLayout(
+                sidebarPanel(
+                    shinyjs::useShinyjs(),
+                    # Input: Select information ----
+                    impressum(),
+                    width = 2
+                ),
+                
+                # Main panel for displaying outputs ----
+                mainPanel(
+                    DT::DTOutput("glossary")
+                )
             )
+        )
+        
         # tabPanel(
         #     "Network",
         #     sidebarLayout(
@@ -159,7 +182,9 @@ server <- function(input, output, session) {
     #         }
     #     }
     # })
-    
+    output$glossary <- renderDataTable({
+      keys  
+    }, filter = "top", options = list(lengthMenu = list(c(10, -1), c("10",   "All"))))
     output$paper_stats <- renderDataTable({
         # generate bins based on input$bins from ui.R
         #browser()

@@ -28,7 +28,18 @@ normalize_authors <- function(author, year, paper_no){
   tmp[,2][nzchar(tmp[,2])] <- " et al."
   sprintf("%s%s (%s) [%s]", tmp[, 1], tmp[,2], year, str_extract(paper_no, "[0-9]+"))  
 }
-
+read_keys <- function(fname = "data/MfMM key.xlsx"){
+  keys <- readxl::read_excel("data/MfMM key.xlsx") %>% 
+    mutate(Column = janitor::make_clean_names(`column heading`)) %>% rename(Description = `column details`)
+  keys <- keys %>% mutate(Column = Column %>% 
+    str_remove_all("[0-9]+")%>% 
+    str_remove_all("_y_n")%>% 
+    str_remove_all("__y__n")%>% 
+    str_remove_all("_$") 
+  )
+  
+  keys %>% select(Column, Description)
+}
 read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"){
   #sheets <- read_csv2( fname) %>% arrange(author)
   sheets <- read_csv( fname) %>% janitor::clean_names() %>% arrange(author)
