@@ -1,0 +1,50 @@
+﻿column heading,column details,possible values where applicable
+scale id,an identification code assigned to the scale by reviewers,numeric 0-2000
+author,authors of the paper where the scale has been reported,"last name, first names (initial letters); last name 2, first names 2 (initial letters);…"
+year,year of publication,1993-2023
+scale name,"the name of the scale, if titled",scale name; untitled
+key notes,summarises main aspects of the scale,"includes type of measure, constructs assessed and any other key information about the scale"
+related scales,"lists the scale id of related scales, which have been developed based on the identified scale or which have inspired another scale's development accoding to the authors",scale id; NA=not applicable
+instrument focused,whether the scale measures motivation for playing a musical instrument,yes; no
+focus if not instrumental,which other types of musical engagement have been targeted if scale is not focused on instrument playing,type of musical engagement; NA=not applicable
+external validity,whether external validity has been reported,yes;no 
+which external validity,which measures of external validity have been reported,external validity measure; NA=not applicable
+note on validity,additional information on external validity measures,note on validity; NA=not applicable
+theoretical framework,"which theory(/ies) have  been used as a framework for developing the scale, as reported by the authors",name of theory; NA=not applicable
+facets of motivation,which facets of motivation have been targeted according to the reviewers,facet 1; facet 2;…
+response categories,details on number/ type/ range of response categories ,number/ range/ type of response category (list of scale components or limits of the scale); NR=not reported
+variance in score,"whether there is a measure of variance, what measure of variance is used, exact values",yes; M=; SD=; NR=not reported
+ceiling/floor effect,whether there is a ceiling or floor effect,yes; no; type of effect; where effect applies; NR=not reported
+internal consistency measure,what type of internal consistency has been measured,internal consistency measure; no
+internal consistency estimate,exact value of internal consistency estimate,value; NR=not reported
+note on reliability,interpretation of strength of scale reliability as reported in paper; other notes on reliability,strength; NA=not applicable
+skills required,lists crucial skills required to complete the test,skill; NA= not applicable
+populations disadvantaged,lists populations who wouldn't be able to complete the test due to missing crucial skills,population; NA=not applicable
+note on inclusivity,notes on adaptations which make a measure inclusive or the extent of the applicability of the scale to different populations,adaptations; applicability; NA=not applicable
+duration,how long does the test take (mostly estimated based on number of items),minutes; NR=not reported
+items,number of scale items,number; NR=not reported
+expansion/reduction,whether the test could benefit from being expanded or reduced,yes; no
+scale efficiency,notes on scale efficiency and how it could be improved,scale improvements; justification for length; NA=not applicable
+sample mean,mean age of the children who completed the scale,mean age (sub-population); y=years; m=months; NR = not reported
+sample range,age range of the children who completed the scale,age range; SD; y=years; m=months; NR= not reported
+sample grade,"grade, or school level, of children who completed the scale as reported by authors",grade; NR= not reported
+sample ages applied,age groups of the children who took part are listed,age group 1; age group 2; …; NR=not reported
+country of study,which country were sample recruited from,country 1; country 2; NR=not reported
+sample population,whether the test was designed for a specific population (TD = typically developing; ADHD = attention deficit hyperactivity disorder; ASD = autism spectrum disorder),population; TD = typically developing; ADHD = attention deficit hyperactivity disorder; ASD = autism spectrum disorder; NR=
+attributes of sample,details on the attributes of recruited sample,attribute; NA=not applicable
+sample size,number of children who completed the scale,N
+additional notes on sample,any further details on sample,note; NA=not applicable
+measures interest,whether the scale targets interest,yes;no
+measures intrinsic motivation,whether the scale targets intrinsic motivation,yes;no
+measures extrinsic motivation,whether the scale targets extrinsic motivation,yes;no
+evaluation notes,notes on strengths and limitations of the scale,strength or limitation; NA=not applicable
+type of measure,which type of measure,child questionnaire; child interview; parent interriew; child and parent questionnaire; teacher questionnaire
+child interview,whether the scale is administered as a child interview,yes;no 
+questionnaire,whether the scale is administered as a questionnaire,yes;no 
+self-report,whether the scale is self-report,yes;no 
+parent- report,whether the scale is parent-report,yes;no 
+teacher-report,whether the scale is teacher-report,yes;no 
+child-and parent-report,whether the scale is child- & parent-report,yes;no 
+individual or group testing,whether group or individual testing was carried out for gathering child reports,individual; group; both; NR= not reported;NA=not applicable (in the case of parent or teacher scales)
+available for research use,whether the scale is available for research use/open access,yes;no ;unclear
+available materials ,whether materials have been published and where to find them,yes; no; location

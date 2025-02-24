@@ -24,15 +24,16 @@ if(type == "full"){
     paper_list <- c("Coding Sheet", unique(papers$sheet) %>% sort())
 } else{
     papers <- setup_workspace(reread = F, version = "reduced")
-    papers <- papers %>% rename(sample_size = sample_size_n, 
-                                duration = duration_mostly_estimates,
-                                individual_or_group_testing = individual_or_group_testing_if_child_report_na_if_parent_or_teacher)
+    # papers <- papers %>% rename(#sample_size = sample_size_n, 
+    #                             #duration = duration_mostly_estimates,
+    #                             individual_or_group_testing = individual_or_group_testing_if_child_report_na_if_parent_or_teacher)
     paper_list <- c("--", unique(papers$paper_id))
     var_list <- names(papers)
 }
 keys <- read_keys()
 print(setdiff(names(papers), keys$Column))
 print(setdiff(keys$Column, names(papers)))
+#norm_values(papers, keys)
 
 impressum <- function(){
     p(

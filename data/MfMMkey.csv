@@ -1,0 +1,50 @@
+﻿column heading,column details
+scale id,an identification code assigned to the scale by reviewers
+author,authors of the paper where the scale has been reported
+year,year published
+scale name,"the name of the scale, if titled, otherwise 'untitiled'"
+key notes,summarises the main aspects of the scale
+similar and related scales,"lists the scale id of related scales, which have been developed based on the identified scale or which have inspired another scale's development accoding to the authors"
+instrument focused,whether the scale measures motivation for playing a musical instrument
+focus if not instrumental,which other types of musical engagement have been targeted if scale is not focused on instrument playing
+external validity (y/n),whether external validity has been reported
+which external validity,which measures of f external validity have been reported
+note on validity,additional information on external validity measures
+theoretical framework,"which theory(/ies) have  been used as a framework for developing the scale, as reported by the authors"
+facets of motivation,which facets of motivation have been targeted according to the reviewers
+response categories,the number and/or type of resonse categories
+variance in score,"whether there is a measure of variance (y=yes, n=no), what measure of variance is used, exact values"
+ceiling/floor effect,"whether there is a ceiling or floor effect (y=yes, n=no)"
+internal consistency measure,what type of internal consistency has been measured (n=no measure of internal consistency)
+internal consistency estimate,exact value of internal consistency estimate
+note on reliability,notes on the reliability of the scale
+skills required,lists crucial skills required to complete the test
+populations not catered for,lists populations who wouldn't be able to complete the test due to missing crucial skills
+note on inclusivity,notes on the applicability of the scale to diverse populations
+duration,how long does the test take (mostly estimated based on number of items)
+number of items,number of items in the scale
+expansion/reduction possible,whether the test could easily be expanded or reduced
+notes on task efficiency,notes on the efficiency of the scale;  whether it could be improved
+sample mean,mean age of the children who completed the scale (nr= not reported)
+sample range,age range of the children who completed the scale (nr=not reported)
+sample grade,"grade, or school level, of children who completed the scale, as reported by authors (nr=not reported)"
+sample ages applied,age groups of the children who took part are listed
+country of study,which country were sample recruited from
+sample population,whether the test was designed for a specific population (TD=typically developing; ADHD= attention deficit hyperactivity disorder; ASD= autism spectrum disorder)
+details on sample population,further details on the type of sample recruited
+sample size (N),number of children who completed the scale
+additional notes on sample,further details on overall sample
+measures interest,"whether the scale targets interest (y=yes, n=no)"
+measures intrinsic motivation (y/n),"whether the scale targets intrinsic motivation (y=yes, n=no)"
+measures extrinsic motivation (y/n),"whether the scale targets extrinsic motivation (y=yes, n=no)"
+individual or group testing,whether group or individual testing was carried out for gathering child reports; NA if parent or teacher
+evaluation notes,notes on strengths and limitations of the scale
+type of measure,"which type of measure (child questionnaire; child interview, …)"
+child interview (y/n),"whether the scale is administered as a child interview (y=yes, n=no)"
+questionnaire/interview (y/n),"whether the scale is administered as a questionnaire (y=yes, n=no)"
+self-report (y/n),"whether the scale is self-report (y=yes, n=no)"
+parent- report (y/n),"whether the scale is parent-report (y=yes, n=no)"
+teacher-report (y/n),"whether the scale is teacher-report (y=yes, n=no)"
+child-and parent-report (y/n),"whether the scale is child- & parent-report (y=yes, n=no)"
+available for research use,"whether the scale is available for research use/open access (y=yes, n=no)"
+available materials ,whether materials have been published and where to find them

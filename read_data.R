@@ -28,27 +28,59 @@ normalize_authors <- function(author, year, paper_no){
   tmp[,2][nzchar(tmp[,2])] <- " et al."
   sprintf("%s%s (%s) [%s]", tmp[, 1], tmp[,2], year, str_extract(paper_no, "[0-9]+"))  
 }
-read_keys <- function(fname = "data/MfMM key.xlsx"){
-  keys <- readxl::read_excel("data/MfMM key.xlsx") %>% 
-    mutate(Column = janitor::make_clean_names(`column heading`)) %>% rename(Description = `column details`)
+
+norm_values <- function(papers, keys){
+  new_values <- 
+    map_chr(1:nrow(keys), function(col_nr){
+      #browser()
+      
+      col <- keys[col_nr,]$Column
+      messagef("Norminbg col  %s (%s)", col_nr, col)
+      if(col_nr %in% c(6, 4, 15, 26, 49)){
+        return(keys[col_nr,]$Values )
+      }
+      paper_values <- papers[[ col ]]
+      if(is.null(paper_values)){
+        browser()
+        messagef("Bad col: %s", col)
+        return(keys[col_nr,]$Values )
+      }
+      if(is.integer(paper_values)){
+        ret <- sprintf("%s-%s",  min(unique(paper_values), na.rm = T), max(unique(paper_values), na.rm = T))
+        return(ret)
+      }
+      keys_values <- keys[col_nr,]$Values 
+      if(!str_detect(keys_values, ";") || str_detect(keys_values, "last name") ){
+        return(keys_values)
+      }
+      ret <- paper_values %>% unique()  %>% str_split(";") %>% unlist() %>% unique() %>% trimws() %>%  paste(collapse = "; ")
+      ret
+    })
+  tibble(col_nr = 1:nrow(keys), old = keys$Column, new = new_values)
+}
+
+read_keys <- function(fname = "data/MfMM key.csv"){
+  keys <- readr::read_csv(fname) %>% 
+  #keys <- readxl::read_excel(fname) %>% 
+    mutate(Column = janitor::make_clean_names(`column heading`)) %>% 
+    rename(Description = `column details`, Values = `possible values where applicable`)
   keys <- keys %>% mutate(Column = Column %>% 
     str_remove_all("[0-9]+")%>% 
     str_remove_all("_y_n")%>% 
     str_remove_all("__y__n")%>% 
     str_remove_all("_$") 
   )
-  
-  keys %>% select(Column, Description)
+  keys %>% select(Column, Description, Values)
 }
 read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"){
   #sheets <- read_csv2( fname) %>% arrange(author)
   sheets <- read_csv( fname) %>% janitor::clean_names() %>% arrange(author)
-  browser()  
+  #browser()  
   empty_cols <- sapply(sheets, function(x) mean(is.na(x)))
   empty_cols <- empty_cols[empty_cols == 1]
   sheets <- sheets %>% select(!names(empty_cols)) %>% janitor::clean_names()
   sheets$year <- as.integer(sheets$year)  
-  sheets$sample_size_n <- as.integer(sheets$sample_size_n)  
+  sheets$sample_size <- as.integer(sheets$sample_size)  
   
   nm <- names(sheets) 
   pseudo_log <- sapply(sheets %>% select(where(is.numeric)), function(x) {
@@ -56,16 +88,22 @@ read_data_reduced <- function(fname = "data/final_motivation_sheet_20241118.csv"
     length(i) >= 1 & length(i) <= 2
     })
   
-  browser()  
-  pseudo_log <- names(pseudo_log[pseudo_log])
-  for(lg in pseudo_log){
-    sheets[[lg]] <- c("0" = "no", "1" = "yes", "unclear" = "??")[as.character(sheets[[lg]])] %>% as.character()
-    sheets[[lg]][is.na(sheets[[lg]])] <- "no"
-  }
-  logicals <- setdiff(nm[str_detect(nm, "_y_n")], "all_necessary_items_and_instructions_for_testing_available_in_paper_or_online_y_n")
-  for(lg in logicals){
-    sheets[[lg]] <- c("y" = "yes", "n" = "no", "unclear" = "??")[sheets[[lg]]]
-  }
+  # pseudo_log <- names(pseudo_log[pseudo_log])
+  # for(lg in pseudo_log){
+  #   sheets[[lg]] <- c("0" = "no", "1" = "yes", "unclear" = "??")[as.character(sheets[[lg]])] %>% as.character()
+  #   sheets[[lg]][is.na(sheets[[lg]])] <- "no"
+  # }
+  # browser()
+  # logicals <- setdiff(nm[str_detect(nm, "_y_n")], 
+  #                     c("all_necessary_items_and_instructions_for_testing_available_in_paper_or_online_y_n", 
+  #                       "variance_in_score_y_n"))
+  # for(lg in logicals){
+  #   sheets[[lg]] <- c("y" = "yes",  
+  #                     "yes" = "yes",
+  #                     "n" = "no", 
+  #                     "no" = "no", 
+  #                     "unclear" = "??")[sheets[[lg]]]
+  # }
   
   nm <- nm %>% 
     str_remove_all("[0-9]+")%>% 
